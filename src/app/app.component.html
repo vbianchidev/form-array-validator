@@ -1,0 +1,50 @@
+<div class="form" [formGroup]="myForm">
+  <h1>Form Array Validator</h1>
+  <mat-form-field>
+    <input matInput placeholder="name" formControlName="name">
+    <mat-error>Name is required</mat-error>
+  </mat-form-field>
+
+  <h2>Schedules <button mat-mini-fab (click)="addSchedule()"><mat-icon>add</mat-icon></button></h2>
+
+  <ng-container formArrayName="schedules">
+    <ng-container *ngFor="let scheduleForm of schedulesArray.controls; let i = index">
+
+      <div class="form-inline" [formGroupName]="i">
+
+        <mat-form-field class="half">
+          <mat-select required multiple name="dayOfWeek" formControlName="daysOfWeek" placeholder="SelectDay">
+            <mat-option *ngFor="let day of days" [value]="day.id">{{ day.name }}</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>today</mat-icon>
+          <mat-error>Conflito de Horarios</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field class="quarter">
+          <input matInput type="time" name="initialTime" formControlName="initialTime" placeholder="Initial Time">
+          <mat-error>
+            Conflito de Horarios
+          </mat-error>
+
+        </mat-form-field>
+        
+        <mat-form-field class="quarter">
+          <input matInput type="time" name="finalTime" formControlName="finalTime" placeholder="Final Time">
+          <mat-error>
+            Conflito de Horarios
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="deleteSchedule(i)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      
+      </div>
+      
+    </ng-container>
+  </ng-container>
+
+  <button [color]="'primary'" class="save" mat-raised-button (click)="save()">Salvar</button>
+</div>
+
+<pre>{{ myForm.errors | json }}</pre>
